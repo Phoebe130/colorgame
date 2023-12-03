@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Game </title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0px;
+            padding: 0px;
+        }
+
+
+        /* 開始畫面-------------- */
+        .start-page {
+            width: 100%;
+            height: 100vh;
+            background-color: rgb(249, 242, 180);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .rules {
+            width: 450px;
+            height: 500px;
+            border: 5px solid gray;
+            background-color: rgb(220, 245, 224);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 20px;
+        }
+
+        .rules li {
+            list-style: none;
+            font-size: 20px;
+        }
+
+        .start-game-btn {
+            width: 155px;
+            border-radius: 20px;
+            box-shadow: rgb(109, 108, 110) 0px 5px 10px 0px;
+            color: brown;
+            line-height: 50px;
+            background-color: bisque;
+            border-color: rgb(109, 108, 110);
+            font-size: 30px;
+            letter-spacing: 2px;
+            font-weight: 400;
+            cursor: pointer;
+
+        }
+
+        /* 遊戲中-------------- */
+        .container-page {
+            width: 100%;
+            height: 100vh;
+            background-color: rgb(249, 242, 180);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: column;
+            display: none;
+        }
+
+        .plate {
+            width: 400px;
+            height: 400px;
+            background-color: white;
+            border-radius: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            /* width: calc(555px / 2);
+            height: calc(555px / 2); */
+            /* background-color: lightskyblue; */
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .ans {
+            /* opacity: 1; */
+        }
+
+
+        .ans-hint {
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 5);
+            border: 1px solid lightgray;
+        }
+
+
+        /* 當時間暫停加入遮罩 */
+        .when-time-stop-page {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(61, 59, 59, 0.871);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .when-time-stop-page>p {
+            letter-spacing: 3px;
+            font-size: 75px;
+            color: white;
+            margin-bottom: 111px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif
+        }
+
+        .when-time-stop-page>button {
+            width: 300px;
+            height: 85px;
+            border-radius: 20px;
+            box-shadow: rgb(108 109 110) 0px 0px 50px 52px;
+            color: #2a36a5;
+            line-height: 85px;
+            background-color: #e9dc14;
+            border-color: rgb(109, 108, 110);
+            font-size: 42px;
+            letter-spacing: 1px;
+            font-weight: 400;
+            cursor: pointer;
+            animation: move 1s infinite;
+
+        }
+
+        @keyframes move {
+
+            0%,
+            100% {
+                position: absolute;
+                /* top: 580px; */
+                transform: translateY(160px);
+            }
+
+            50% {
+                /* top: 630px; */
+                transform: translateY(100px);
+
+            }
+
+        }
+
+        /* 遊戲中 功能區 */
+        .container-top,
+        .container-bottom {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .score {
+            width: 106px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: rgb(255, 74, 72, 0.85) 0px 5px 35px 0px;
+            color: brown;
+            line-height: 80px;
+        }
+
+        .countdown-timer {
+            width: 160px;
+            height: 80px;
+            border-radius: 20px;
+            box-shadow: rgb(109, 108, 110) 0px 5px 10px 0px;
+            color: brown;
+            line-height: 80px;
+        }
+
+        .sos-btn,
+        .time-stop-btn {
+            width: 110px;
+            height: 50px;
+            border-radius: 20px;
+            box-shadow: rgb(109, 108, 110) 0px 5px 10px 0px;
+            color: brown;
+            line-height: 50px;
+            background-color: bisque;
+            border-color: rgb(109, 108, 110);
+            font-size: 20px;
+            letter-spacing: 2px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        /* 遊戲結束畫面-------------- */
+        .end-page {
+            width: 100%;
+            height: 100vh;
+            background-color: rgb(249, 242, 180);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            display: none;
+        }
+
+        .end-area {
+            width: 450px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            border-radius: 20px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .show-score {
+            width: 200px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: rgb(244, 181, 86) 0px 5px 35px 0px;
+            color: brown;
+            line-height: 80px;
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        .restart-btn {
+            width: 220px;
+            border-radius: 20px;
+            box-shadow: rgb(109, 108, 110) 0px 5px 10px 0px;
+            color: brown;
+            line-height: 50px;
+            background-color: bisque;
+            border-color: rgb(109, 108, 110);
+            font-size: 30px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .restart-btn:hover {
+            scale: 120%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 開始畫面 -->
+    <div class="start-page">
+        <ul class="rules">
+            <h1>Color Game</h1>
+            <li>限時30秒內找出不同色的方塊</li>
+            <li>答對+1分 答錯-1分</li>
+            <li>使用提示該題不計分</li>
+            <li>每五分進入下一個等級</li>
+            <li>過程中可以暫停</li>
+            <button class="start-game-btn" type="button">Start</button>
+        </ul>
+    </div>
+    <!-- 遊戲中畫面-->
+    <div class="container-page">
+        <div class="container-top">
+            <div class="score">0</div>
+            <div class="countdown-timer">Time:30s</div>
+        </div>
+        <div class="plate">
+            <!-- 運用js塞入 -->
+            <!-- <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div> -->
+        </div>
+        <div class="container-bottom">
+            <button class="sos-btn" type="button">SOS</button>
+            <button class="time-stop-btn" type="button">STOP</button>
+        </div>
+    </div>
+    <!-- 遊戲中 時間暫停-->
+    <div class="when-time-stop-page">
+        <p>Time Stop</p>
+        <button class="continue-btn" type="button">continue</button>
+    </div>
+    <div class="end-page">
+        <div class="end-area">
+            <h2>你的分數</h2>
+            <div class="show-score"></div>
+            <div class="comment"></div>
+            <button class="restart-btn" type="button">Play Again</button>
+        </div>
+    </div>
+
+
+    <script>
+        /* 初步想法
+            選擇所有命名為 .plate>.box 的多個class
+            const boxes = document.querySelectorAll('.plate>.box')
+            console.log(boxes);
+            for (let i = 0; i < 4; i++) {
+            集合裡的每一個元素作點擊事件
+            boxes[i].addEventListener('click', function () {
+                console.log(`你點到了${i}`);
+            });
+            }
+        */
+        // 進階想法  
+        const plate = document.querySelector('.plate');
+        console.log(plate);
+
+        let startPage = document.querySelector('.start-page');
+        let containerPage = document.querySelector('.container-page');
+        let endPage = document.querySelector('.end-page');
+        let whenTimeStopPage = document.querySelector('.when-time-stop-page');
+        let startBtn = document.querySelector('.start-game-btn');
+        let sosBtn = document.querySelector('.sos-btn');
+        let timeStopBtn = document.querySelector('.time-stop-btn');
+        let continueBtn = document.querySelector('.continue-btn');
+        let score = document.querySelector('.score');
+        let countdownTimer = document.querySelector('.countdown-timer');
+        let showScore = document.querySelector('.show-score');
+        let comment = document.querySelector('.comment');
+        let restartBtn = document.querySelector('.restart-btn');
+
+
+        // 設定等級
+        let level = 1;
+
+        //設定得分
+        let getPoint = 0;
+        // score.innerHTML = " ";
+
+        // 設定時間倒數器
+        let timeleft = 30;
+        // countdownTimer.innerHTML = " ";
+
+        // 設定困難度（透明度）
+        let difficulty = 0.5;
+
+        // 點擊遊戲開始
+        startBtn.addEventListener('click', function () {
+            startPage.style.display = 'none';
+            containerPage.style.display = 'flex';
+            endPage.style.display = 'none';
+
+            // 設定得分
+            score.innerHTML = `${getPoint} 分`;
+
+            timeleft = 3;
+            countdownTimer.innerHTML = " ";
+
+            // 設定時間倒數器
+            countdownTimer.innerHTML = `Time:  ${timeleft}s`;
+
+        })
+
+        // 點擊重新開始按鈕
+        restartBtn.addEventListener('click', function () {
+            startPage.style.display = 'flex';
+            containerPage.style.display = 'none';
+            endPage.style.display = 'none';
+
+            //得分、倒數計時器、level 重新呼叫盒子 初始化
+            getPoint = 0;
+            timeleft = 30;
+            difficulty = 0.5;
+            level = 1
+            addBoxes();
+            // location.reload();
+
+            // 這邊還需要修改！！！！把時間倒數器編號存入function
+            timeFuntion = setInterval(function () {
+            timeleft = timeleft - 1;
+            countdownTimer.innerHTML = `Time:  ${timeleft}s`;
+            if (timeleft == 0) {
+                clearInterval(timeFuntion)
+                containerPage.style.display = 'none';
+                endPage.style.display = 'flex';
+                showScore.innerHTML = '得到：' + getPoint + ' 分'
+                if (getPoint > 23) {
+                    comment.innerHTML = '你是最棒的！'
+                } else if (getPoint > 10) {
+                    comment.innerHTML = '登愣！你可以更好！'
+                } else {
+                    comment.innerHTML = '請睜開你的眼睛'
+                }
+            }
+        }, 1000);
+        })
+
+        //點擊提示
+        sosBtn.addEventListener('click', function () {
+            let ansBox = document.querySelector('.ans');
+            ansBox.classList.add('ans-hint');
+            console.log(getPoint);
+            getPoint = getPoint - 1;
+            score.innerHTML = `${getPoint} 分`;
+        });
+
+        // 點擊時間暫停
+        timeStopBtn.addEventListener('click', function () {
+            // alert('時間暫停，先眨眨眼吧！');
+            clearInterval(timeFuntion);
+            startPage.style.display = 'none';
+            containerPage.style.display = 'none';
+            endPage.style.display = 'none';
+            whenTimeStopPage.style.display = 'flex';
+            console.log(timeleft);
+        })
+
+        // 點擊遊戲繼續按鈕
+        continueBtn.addEventListener('click', function () {
+            // startTimer();
+
+            // 重新啟動時間倒數器
+            timeFuntion = setInterval(function () {
+                timeleft = timeleft - 1;
+                countdownTimer.innerHTML = `Time:  ${timeleft}s`;
+                if (timeleft == 0) {
+                    clearInterval(timeFuntion)
+                    containerPage.style.display = 'none';
+                    endPage.style.display = 'flex';
+                    showScore.innerHTML = '得到：' + getPoint + ' 分'
+                    if (getPoint > 23) {
+                        comment.innerHTML = '你是最棒的！'
+                    } else if (getPoint > 10) {
+                        comment.innerHTML = '登愣！你可以更好！'
+                    } else {
+                        comment.innerHTML = '請睜開你的眼睛'
+                    }
+                }
+            }, 1000);
+
+            whenTimeStopPage.style.display = 'none';
+            containerPage.style.display = 'flex';
+            console.log(timeleft);
+            // 重新生成新盒子(防止玩家作弊)
+            addBoxes();
+            countdownTimer.innerHTML = `Time:  ${timeleft}s`;
+
+
+        })
+
+        plate.addEventListener('click', function (event) {
+            // 點擊事件會獲得event，需要自己寫變數去取得
+            // console.log(event.target);
+            // event.target會是個元素，可以依據此元素是否含有plate來決定要不要繼續往下執行
+
+            // 假設元素class含有box的相反 = 不含box(此功能主要是為了不要點到box以外的白邊)
+            if (!event.target.classList.contains('box')) return;
+            //  點到含有ans的box
+            if (event.target.classList.contains('ans')) {
+
+                getPoint = getPoint + 1;
+                score.innerHTML = `${getPoint} 分`;
+
+                // 每五分進下一等級
+                let levelUp = false;
+                if (getPoint >= 5 && level < 2) {
+                    levelUp = true;
+                    level = level + 1;
+                    difficulty = 0.6;
+                } if (getPoint >= 10 && level < 3) {
+                    levelUp = true;
+                    level = level + 1;
+                    difficulty = 0.7;
+                } if (getPoint >= 15 && level < 4) {
+                    levelUp = true;
+                    level = level + 1;
+                    difficulty = 0.8;
+                } if (getPoint >= 20 && level < 5) {
+                    levelUp = true;
+                    level = level + 1;
+                    difficulty = 0.9;
+                }
+
+                // 答對後 再次重新加入新盒子
+                addBoxes();
+                console.log(`點到ans`, event.target);
+            } else {
+                //checkAnswer可以放在這裡
+                // 答錯可以放這裡
+                alert('答錯！再仔細看一次！或使用提示按鈕！');
+                getPoint = getPoint - 1;
+                score.innerHTML = `${getPoint} 分`;
+
+            }
+        });
+
+
+
+
+        //  呼叫function 遊戲一開始就要進入畫面所以要呼叫
+        addBoxes();
+
+        // 塞入盒子的函式 
+        function addBoxes() {
+            const boxCount = getBoxCount(level);
+
+            // 共max個 其中一個是正解盒子
+            const ansNumber = getRandomInt((level + 1) * 2, 0);
+
+            // 加入盒子前，先清空盒子
+            plate.innerHTML = "";
+
+            // 設定寬高      
+            let widthHeight = getWidth(level);
+
+            // 設定顏色
+            let r = Math.floor(Math.random() * 200);
+            let g = Math.floor(Math.random() * 200);
+            let b = Math.floor(Math.random() * 200);
+            console.log(r, g, b);
+
+
+            // 模板寫回html
+            for (let i = 0; i < boxCount; i++) {
+                if (i == ansNumber) {
+                    // onclick="checkanswer(true)" 
+                    plate.innerHTML +=
+                        `<div 
+                        class="box ans" 
+                    style="width:${widthHeight}px;
+                    height:${widthHeight}px;
+                    background-color:rgb(${r}, ${g}, ${b});
+                    opacity:${difficulty};">
+                    </div>`;
+                } else {
+                    plate.innerHTML +=
+                        `<div 
+                        class="box" 
+                    style="width:${widthHeight}px; 
+                    height:${widthHeight}px;
+                    background-color:rgb(${r}, ${g}, ${b})"></div>`;
+                }
+            }
+        }
+
+
+        // 隨機從全部box跑出其中1個選為正解
+        function getRandomInt(max, min) {
+            return Math.floor(Math.random() * max) + min;
+        }
+
+        // 取得邊長的函式  依據等級取得邊長
+        // lv ＝> 等級  參數1得到等級1的寬高...
+        function getWidth(lv) {
+            return (370 - 15 * lv) / (lv + 1);
+        }
+
+        // 要幾個方塊  依據等級取得幾個方塊
+        // lv1=>4 lv2=>9 lv3=>16 lv =>(n+1)*(n+1)  => level+1的平方 
+        function getBoxCount(lv) {
+            return (lv + 1) * (lv + 1);
+        }
+
+
+        //控制時間倒數器函式變數
+        timeFuntion = setInterval(function () {
+            timeleft = timeleft - 1;
+            countdownTimer.innerHTML = `Time:  ${timeleft}s`;
+            if (timeleft == 0) {
+                clearInterval(timeFuntion)
+                containerPage.style.display = 'none';
+                endPage.style.display = 'flex';
+                showScore.innerHTML = '得到：' + getPoint + ' 分'
+                if (getPoint > 23) {
+                    comment.innerHTML = '你是最棒的！'
+                } else if (getPoint > 10) {
+                    comment.innerHTML = '登愣！你可以更好！'
+                } else {
+                    comment.innerHTML = '請睜開你的眼睛'
+                }
+            }
+        }, 1000);
+
+        // ------------需要再修改！！！！！！！
+        // // 將編號timeFuntion計時器存入名為startTimer的函數
+        // let timeFuntion;
+        // let flag = true;
+        // function startTimer() {
+        //     if (!flag) return;
+
+        //     timeFuntion = setInterval(function () {
+        //         timeleft = timeleft - 1;
+        //         countdownTimer.innerHTML = `Time:  ${timeleft}s`;
+        //         if (timeleft == 0) {
+        //             clearInterval(timeFuntion)
+        //             containerPage.style.display = 'none';
+        //             endPage.style.display = 'flex';
+        //             showScore.innerHTML = '得到：' + getPoint + ' 分'
+        //             if (getPoint > 23) {
+        //                 comment.innerHTML = '你是最棒的！'
+        //             } else if (getPoint > 10) {
+        //                 comment.innerHTML = '登愣！你可以更好！'
+        //             } else {
+        //                 comment.innerHTML = '請睜開你的眼睛'
+        //             }
+        //         }
+        //     }, 1000);
+        //     flag = false;
+        // }
+
+
+
+        /* -------遊戲需求-------
+        1.要有得分
+        2.依據得分增加等級難度
+        3.答案的透明度要越來越不透明(0.3-0.6)
+        4.顏色不能定死
+        5.承上 選到正解 要能換顏色答案
+        5.選錯 要有懲罰（扣分）
+        */
+    </script>
+</body>
+
+</html>
