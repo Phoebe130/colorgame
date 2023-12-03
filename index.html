@@ -117,7 +117,8 @@
             font-size: 75px;
             color: white;
             margin-bottom: 111px;
-            font-family: Verdana, Geneva, Tahoma, sans-serif
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-align: center;
         }
 
         .when-time-stop-page>button {
@@ -134,7 +135,6 @@
             font-weight: 400;
             cursor: pointer;
             animation: move 1s infinite;
-
         }
 
         @keyframes move {
@@ -353,7 +353,7 @@
             // 設定得分
             score.innerHTML = `${getPoint} 分`;
 
-            timeleft = 30;
+            timeleft = 3;
             countdownTimer.innerHTML = " ";
 
             // 設定時間倒數器
@@ -373,26 +373,28 @@
             difficulty = 0.5;
             level = 1
             addBoxes();
+
             // location.reload();
+
 
             // 這邊還需要修改！！！！把時間倒數器編號存入function
             timeFuntion = setInterval(function () {
-            timeleft = timeleft - 1;
-            countdownTimer.innerHTML = `Time:  ${timeleft}s`;
-            if (timeleft == 0) {
-                clearInterval(timeFuntion)
-                containerPage.style.display = 'none';
-                endPage.style.display = 'flex';
-                showScore.innerHTML = '得到：' + getPoint + ' 分'
-                if (getPoint > 23) {
-                    comment.innerHTML = '你是最棒的！'
-                } else if (getPoint > 10) {
-                    comment.innerHTML = '登愣！你可以更好！'
-                } else {
-                    comment.innerHTML = '請睜開你的眼睛'
+                timeleft = timeleft - 1;
+                countdownTimer.innerHTML = `Time:  ${timeleft}s`;
+                if (timeleft == 0) {
+                    clearInterval(timeFuntion)
+                    containerPage.style.display = 'none';
+                    endPage.style.display = 'flex';
+                    showScore.innerHTML = '得到：' + getPoint + ' 分'
+                    if (getPoint > 23) {
+                        comment.innerHTML = '你是最棒的！'
+                    } else if (getPoint > 10) {
+                        comment.innerHTML = '登愣！你可以更好！'
+                    } else {
+                        comment.innerHTML = '請睜開你的眼睛'
+                    }
                 }
-            }
-        }, 1000);
+            }, 1000);
         })
 
         //點擊提示
@@ -581,7 +583,7 @@
             }
         }, 1000);
 
-     // ------------需要再修改！！！！！！！
+        // ------------需要再修改！！！！！！！
         // 將編號timeFuntion計時器存入名為startTimer的函數
         // let timeFuntion;
         // let flag = true;
